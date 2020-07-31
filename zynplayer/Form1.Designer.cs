@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.titleBar = new System.Windows.Forms.Panel();
             this.minBtn_light = new System.Windows.Forms.Button();
             this.closeBtn_light = new System.Windows.Forms.Button();
             this.title = new System.Windows.Forms.Label();
             this.bottombarShadow = new System.Windows.Forms.Panel();
             this.bottomBar = new System.Windows.Forms.Panel();
+            this.volumeBar = new System.Windows.Forms.Panel();
+            this.volumebarSlider = new System.Windows.Forms.Panel();
             this.playBtn = new System.Windows.Forms.Button();
             this.trackBar = new System.Windows.Forms.Panel();
             this.trackbarSlider = new System.Windows.Forms.Panel();
@@ -49,13 +52,12 @@
             this.middleBar = new System.Windows.Forms.Panel();
             this.songList = new System.Windows.Forms.ListBox();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.volumeBar = new System.Windows.Forms.Panel();
-            this.volumebarSlider = new System.Windows.Forms.Panel();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.titleBar.SuspendLayout();
             this.bottomBar.SuspendLayout();
+            this.volumeBar.SuspendLayout();
             this.trackBar.SuspendLayout();
             this.middleBar.SuspendLayout();
-            this.volumeBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleBar
@@ -144,6 +146,24 @@
             this.bottomBar.Name = "bottomBar";
             this.bottomBar.Size = new System.Drawing.Size(422, 66);
             this.bottomBar.TabIndex = 2;
+            // 
+            // volumeBar
+            // 
+            this.volumeBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(175)))), ((int)(((byte)(154)))));
+            this.volumeBar.Controls.Add(this.volumebarSlider);
+            this.volumeBar.Location = new System.Drawing.Point(400, 7);
+            this.volumeBar.Name = "volumeBar";
+            this.volumeBar.Size = new System.Drawing.Size(8, 52);
+            this.volumeBar.TabIndex = 5;
+            // 
+            // volumebarSlider
+            // 
+            this.volumebarSlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(75)))), ((int)(((byte)(66)))));
+            this.volumebarSlider.Location = new System.Drawing.Point(0, 22);
+            this.volumebarSlider.Name = "volumebarSlider";
+            this.volumebarSlider.Size = new System.Drawing.Size(8, 8);
+            this.volumebarSlider.TabIndex = 5;
+            this.volumebarSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.volumeMove);
             // 
             // playBtn
             // 
@@ -302,23 +322,10 @@
             this.songList.TabIndex = 0;
             this.songList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawItem);
             // 
-            // volumeBar
+            // timer
             // 
-            this.volumeBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(175)))), ((int)(((byte)(154)))));
-            this.volumeBar.Controls.Add(this.volumebarSlider);
-            this.volumeBar.Location = new System.Drawing.Point(400, 7);
-            this.volumeBar.Name = "volumeBar";
-            this.volumeBar.Size = new System.Drawing.Size(8, 52);
-            this.volumeBar.TabIndex = 5;
-            // 
-            // volumebarSlider
-            // 
-            this.volumebarSlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(75)))), ((int)(((byte)(66)))));
-            this.volumebarSlider.Location = new System.Drawing.Point(0, 44);
-            this.volumebarSlider.Name = "volumebarSlider";
-            this.volumebarSlider.Size = new System.Drawing.Size(8, 8);
-            this.volumebarSlider.TabIndex = 5;
-            this.volumebarSlider.MouseMove += new System.Windows.Forms.MouseEventHandler(this.volumeMove);
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // Form1
             // 
@@ -349,9 +356,9 @@
             this.titleBar.ResumeLayout(false);
             this.titleBar.PerformLayout();
             this.bottomBar.ResumeLayout(false);
+            this.volumeBar.ResumeLayout(false);
             this.trackBar.ResumeLayout(false);
             this.middleBar.ResumeLayout(false);
-            this.volumeBar.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -381,6 +388,7 @@
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.Panel volumeBar;
         private System.Windows.Forms.Panel volumebarSlider;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

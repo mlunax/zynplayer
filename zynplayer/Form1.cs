@@ -11,12 +11,23 @@ namespace zynplayer {
         public Form1() {
             InitializeComponent();
             InitializeRPC();
+            UpdateRPC();
         }
 
         bool closing;
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
             closing = true;
+        }
+
+        private void timer_Tick(object sender, EventArgs e) {
+            UpdateRPC();
+        }
+
+        private string FormattedTime(int s) {
+            TimeSpan time = TimeSpan.FromSeconds(s);
+
+            return time.ToString(@"hh\:mm\:ss\:fff");
         }
 
         #region Moveable Window
@@ -106,17 +117,21 @@ namespace zynplayer {
         AudioFileReader af;
 
         bool isPlaying = false;
+        string songPlaying;
 
         private void playBtn_Click(object sender, EventArgs e) {
             isPlaying = !isPlaying;
+            songPlaying = songList.SelectedItem.ToString();
 
             if (songList.SelectedIndex < 0) songList.SelectedIndex = 0;
             af = new AudioFileReader(songPaths[songList.SelectedIndex]);
+            af.Volume = 1 - volumebarSlider.Location.Y / 44f;
 
             wo.PlaybackStopped += (s, a) => { if (closing) { wo.Dispose(); af.Dispose(); } };
-            
+
             switch (isPlaying) {
                 case false:
+                    timer.Stop();
                     wo.Stop();
                     playBtn.Tag = "playBtn";
                     playBtn.BackgroundImage = Properties.Resources.playBtnHover;
@@ -124,6 +139,7 @@ namespace zynplayer {
                 case true:
                     wo.Init(af);
                     wo.Play();
+                    timer.Start();
 
                     playBtn.Tag = "pauseBtn";
                     playBtn.BackgroundImage = Properties.Resources.pauseBtnHover;
@@ -152,9 +168,23 @@ namespace zynplayer {
         private void InitializeRPC() {
             rpcClient = new DiscordRpcClient("715943346664636467");
             rpcClient.Initialize();
+
+            
         }
 
-
+        private void UpdateRPC() {
+            try {
+                rpcClient.SetPresence(new RichPresence() {
+                    Details = songPlaying,
+                    State = FormattedTime((int)af.CurrentTime.TotalSeconds),
+                    Assets = new Assets() {
+                        LargeImageKey = "icon",
+                        LargeImageText = songPlaying,
+                        SmallImageKey = "icon"
+                    }
+                });
+            } catch (Exception ex) { }
+        }
 
         #endregion
     }
