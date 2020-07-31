@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using DiscordRPC;
 
 namespace zynplayer {
@@ -111,20 +105,19 @@ namespace zynplayer {
         WaveOutEvent wo = new WaveOutEvent();
         AudioFileReader af;
 
-        bool isPlaying;
+        bool isPlaying = false;
 
         private void playBtn_Click(object sender, EventArgs e) {
             isPlaying = !isPlaying;
 
+            if (songList.SelectedIndex < 0) songList.SelectedIndex = 0;
             af = new AudioFileReader(songPaths[songList.SelectedIndex]);
 
             wo.PlaybackStopped += (s, a) => { if (closing) { wo.Dispose(); af.Dispose(); } };
             
-
             switch (isPlaying) {
                 case false:
                     wo.Stop();
-
                     playBtn.Tag = "playBtn";
                     playBtn.BackgroundImage = Properties.Resources.playBtnHover;
                     break;
