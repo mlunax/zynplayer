@@ -27,7 +27,7 @@ namespace zynplayer {
         private string FormattedTime(int s) {
             TimeSpan time = TimeSpan.FromSeconds(s);
 
-            return time.ToString(@"hh\:mm\:ss\:fff");
+            return time.ToString(@"mm\:ss");
         }
 
         #region Moveable Window
@@ -115,6 +115,7 @@ namespace zynplayer {
 
         WaveOutEvent wo = new WaveOutEvent();
         AudioFileReader af;
+
 
         bool isPlaying = false;
         string songPlaying;
