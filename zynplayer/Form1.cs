@@ -120,12 +120,13 @@ namespace zynplayer {
         bool isPlaying = false;
         string songPlaying;
 
-        private void playBtn_Click(object sender, EventArgs e) {
+        private void playBtn_Click(object sender, EventArgs e)
+        {
             isPlaying = !isPlaying;
-            songPlaying = songList.SelectedItem.ToString();
 
             if (songList.SelectedIndex < 0) songList.SelectedIndex = 0;
             af = new AudioFileReader(songPaths[songList.SelectedIndex]);
+            songPlaying = songList.SelectedItem.ToString();
             af.Volume = 1 - volumebarSlider.Location.Y / 44f;
 
             wo.PlaybackStopped += (s, a) => { if (closing) { wo.Dispose(); af.Dispose(); } };
